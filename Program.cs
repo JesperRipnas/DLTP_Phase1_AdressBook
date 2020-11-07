@@ -16,9 +16,46 @@ namespace DLTP_Phase1_AdressBook2
             ReadFile();
             do
             {
-                Console.ReadLine();
+                string userInput = Console.ReadLine();
+                if (userInput == "quit")
+                {
+                    quit = true;
+                }
+                UserPick(filePath, userInput);
             }
             while (!quit);
+            Console.WriteLine("Goodbye!");
+        }
+        public static void UserPick(string filePath, string userInput)
+        {
+            string input = userInput;
+            switch (input)
+            {
+                case "1":
+                    Console.Clear();
+                    if (new FileInfo(filePath).Length == 0)
+                    {
+                        Console.WriteLine("No contacts found!\n");
+                        Menu();
+                    }
+                    else
+                    {
+                        PrintFile(filePath);
+                        Menu();
+                    }
+                    break;
+            }
+        }
+        public static void PrintFile(string filePath)
+        {
+            string[] fileText = File.ReadAllLines(filePath);
+            Console.WriteLine("Contacts");
+            foreach (string row in fileText)
+            {
+                string[] split = row.Split(';');
+                Console.Write($"Name: {split[0]}\nAdress: {split[1]}\nPhone: {split[2]}\nEmai: {split[3]}\n");
+                Console.WriteLine();
+            }
         }
         public static string ReadFile()
         {
@@ -41,7 +78,7 @@ namespace DLTP_Phase1_AdressBook2
             Console.WriteLine("3: Remove contact");
             Console.WriteLine("4: Save to file");
             Console.WriteLine("End program by typing 'quit'");
-            Console.Write("> ");
+            Console.Write("> ");          
         }
         class Person
         {
