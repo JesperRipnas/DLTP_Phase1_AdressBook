@@ -21,51 +21,49 @@ namespace DLTP_Phase1_AdressBook2
                 {
                     quit = true;
                 }
-                UserPick(filePath, userInput);
+                switch (userInput)
+                {
+                    case "1":
+                        Console.Clear();
+                        if (new FileInfo(filePath).Length == 0)
+                        {
+                            Console.WriteLine("No contacts found!\n");
+                            Menu();
+                        }
+                        else
+                        {
+                            PrintFile(filePath);
+                            Menu();
+                        }
+                        break;
+                    case "2":
+                        Console.Clear();
+                        AddContact(filePath);
+                        Menu();
+                        break;
+                    case "3":
+                        Console.Clear();
+                        if (new FileInfo(filePath).Length == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("No contacts found!\n");
+                            Menu();
+                        }
+                        else
+                        {
+                            PrintFile(filePath);
+                            RemoveContact(filePath);
+                        }
+                        break;
+                    case "4":
+                        break;
+                    default:
+                        Console.WriteLine("Incorrect input, please try again!");
+                        break;
+                }
             }
             while (!quit);
             Console.WriteLine("Goodbye!");
-        }
-        public static void UserPick(string filePath, string userInput)
-        {
-            string input = userInput;
-            switch (input)
-            {
-                case "1":
-                    Console.Clear();
-                    if (new FileInfo(filePath).Length == 0)
-                    {
-                        Console.WriteLine("No contacts found!\n");
-                        Menu();
-                    }
-                    else
-                    {
-                        PrintFile(filePath);
-                        Menu();
-                    }
-                    break;
-                case "2":
-                    Console.Clear();
-                    AddContact(filePath);
-                    Menu();
-                    break;
-                case "3":
-                    Console.Clear();
-                    if (new FileInfo(filePath).Length == 0)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("No contacts found!\n");
-                        Menu();
-                    }
-                    else
-                    {
-                        PrintFile(filePath);
-                        RemoveContact(filePath);
-                    }
-                    break;
-                case "4":
-                    break;
-            }
         }
         public static void SaveToFile(string filePath)
         {
@@ -132,13 +130,11 @@ namespace DLTP_Phase1_AdressBook2
                         break;
                     }
                 }
-                else if(removeContact != Book[i].name)
+                else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("(!) Incorrect name!\n");
+                    Console.WriteLine($"Could not find contact {removeContact}\n");
                     Console.ResetColor();
-                    RemoveContact(filePath);
-                    break;
                 }
             }
             Menu();
@@ -156,16 +152,29 @@ namespace DLTP_Phase1_AdressBook2
         }
         public static string ReadFile()
         {
-            string filePath = @"C:\adressbook\contacts.txt";
-            string[] fileText = File.ReadAllLines(filePath);
-            //Read file and saves already written information into list
-            foreach (string row in fileText)
+            try
             {
-                string[] split = row.Split(';');
-                Person N = new Person(split[0], split[1], split[2], split[3]);
-                Book.Add(N);
+                string filePath = @"C:\adressbook\contacts.txt";
+                string[] fileText = File.ReadAllLines(filePath);
+                //Read file and saves already written information into list
+                foreach (string row in fileText)
+                {
+                    string[] split = row.Split(';');
+                    Person N = new Person(split[0], split[1], split[2], split[3]);
+                    Book.Add(N);
+                }
+                return filePath;
             }
-            return filePath;
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Could not load file: contacts.txt");
+                Console.WriteLine("Press any key to quit");
+                Console.ResetColor();
+                Console.ReadLine();
+                Environment.Exit(0);
+                return "";
+            }
         }
         public static void Menu()
         {
