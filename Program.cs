@@ -45,13 +45,25 @@ namespace DLTP_Phase1_AdressBook2
                     }
                     break;
                 case "2":
+                    Console.Clear();
                     AddContact();
+                    break;
+                case "3":
+                    Console.Clear();
+                    if (new FileInfo(filePath).Length == 0)
+                    {
+                        Console.WriteLine("No contacts found!\n");
+                    }
+                    else
+                    {
+                        PrintFile(filePath);
+                        RemoveContact();
+                    }
                     break;
             }
         }
         public static void AddContact()
         {
-            Console.Clear();
             Console.Write("Enter first & lastname: ");
             string newName = Console.ReadLine();
             Console.Write("Enter adress: ");
@@ -67,6 +79,31 @@ namespace DLTP_Phase1_AdressBook2
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("(!) IMPORTANT: Remember to save to file (4) before ending program (!)\n");
             Console.ResetColor();
+            Menu();
+        }
+        public static void RemoveContact()
+        {
+            Console.Write("Enter full name of contact you want to remove: ");
+            string removeContact = Console.ReadLine();
+            // Source: https://www.c-sharpcorner.com/UploadFile/mahesh/remove-items-from-a-C-Sharp-list/
+            for (int i = 0; i < Book.Count; i++)
+            {
+                if (removeContact == Book[i].name)
+                {
+                    Book.RemoveAt(i);
+                    Console.WriteLine($"{removeContact} was removed!");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("(!) IMPORTANT: Remember to save to file (4) before ending program (!)\n");
+                    Console.ResetColor();
+                }
+                else if(removeContact != Book[i].name)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Incorrect name!\n");
+                    Console.ResetColor();
+                    break;
+                }
+            }
             Menu();
         }
 
