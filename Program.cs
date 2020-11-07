@@ -44,8 +44,32 @@ namespace DLTP_Phase1_AdressBook2
                         Menu();
                     }
                     break;
+                case "2":
+                    AddContact();
+                    break;
             }
         }
+        public static void AddContact()
+        {
+            Console.Clear();
+            Console.Write("Enter first & lastname: ");
+            string newName = Console.ReadLine();
+            Console.Write("Enter adress: ");
+            string newAdress = Console.ReadLine();
+            Console.Write("Enter phone: ");
+            string newPhone = Console.ReadLine();
+            Console.Write("Enter email: ");
+            string newEmail = Console.ReadLine();
+            Person newContact = new Person(newName, newAdress, newPhone, newEmail);
+            Book.Add(newContact);
+            //Print out
+            Console.WriteLine($"{newName}, {newAdress}, {newPhone}, {newEmail} was added!");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("(!) IMPORTANT: Remember to save to file (4) before ending program (!)\n");
+            Console.ResetColor();
+            Menu();
+        }
+
         public static void PrintFile(string filePath)
         {
             string[] fileText = File.ReadAllLines(filePath);
