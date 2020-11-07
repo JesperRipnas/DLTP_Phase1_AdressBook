@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection.Metadata.Ecma335;
 
 namespace DLTP_Phase1_AdressBook2
 {
@@ -13,7 +14,6 @@ namespace DLTP_Phase1_AdressBook2
             string filePath = ReadFile();
             bool quit = false;
             Menu();
-            ReadFile();
             do
             {
                 string userInput = Console.ReadLine();
@@ -47,38 +47,58 @@ namespace DLTP_Phase1_AdressBook2
                 case "2":
                     Console.Clear();
                     AddContact();
+                    SaveToFile(filePath);
                     break;
                 case "3":
                     Console.Clear();
                     if (new FileInfo(filePath).Length == 0)
                     {
                         Console.WriteLine("No contacts found!\n");
+                        Menu();
                     }
                     else
                     {
                         PrintFile(filePath);
                         RemoveContact();
+                        SaveToFile(filePath);
                     }
+                    break;
+                case "4":
+                    SaveToFile(filePath);
                     break;
             }
         }
+        public static void SaveToFile(string filePath)
+        {
+            // Clear file before writing
+            // Source: https://stackoverflow.com/questions/14071475/remove-all-previous-text-before-writing
+            File.WriteAllText(filePath, string.Empty);
+            // Write to file
+            // Source: https://www.geeksforgeeks.org/how-to-read-and-write-a-text-file-in-c-sharp/
+            foreach (Person i in Book)
+            {
+                File.AppendAllText(filePath, $"{i.name};{i.adress};{i.phonenumber};{i.email}\n");
+            }
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Saved to file! {filePath}\n");
+            Console.ResetColor();
+            Menu();
+        }
         public static void AddContact()
         {
-            Console.Write("Enter first & lastname: ");
+            Console.Write("(1/4) Enter first & lastname: ");
             string newName = Console.ReadLine();
-            Console.Write("Enter adress: ");
+            Console.Write("(2/4) Enter adress: ");
             string newAdress = Console.ReadLine();
-            Console.Write("Enter phone: ");
+            Console.Write("(3/4) Enter phone: ");
             string newPhone = Console.ReadLine();
-            Console.Write("Enter email: ");
+            Console.Write("(4/4) Enter email: ");
             string newEmail = Console.ReadLine();
             Person newContact = new Person(newName, newAdress, newPhone, newEmail);
             Book.Add(newContact);
             //Print out
             Console.WriteLine($"{newName}, {newAdress}, {newPhone}, {newEmail} was added!");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("(!) IMPORTANT: Remember to save to file (4) before ending program (!)\n");
-            Console.ResetColor();
             Menu();
         }
         public static void RemoveContact()
@@ -92,19 +112,18 @@ namespace DLTP_Phase1_AdressBook2
                 {
                     Book.RemoveAt(i);
                     Console.WriteLine($"{removeContact} was removed!");
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("(!) IMPORTANT: Remember to save to file (4) before ending program (!)\n");
-                    Console.ResetColor();
+                    Menu();
+                    break; ;
                 }
                 else if(removeContact != Book[i].name)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Incorrect name!\n");
+                    Console.WriteLine("(!) Incorrect name!\n");
                     Console.ResetColor();
+                    RemoveContact();
                     break;
                 }
             }
-            Menu();
         }
 
         public static void PrintFile(string filePath)
@@ -137,7 +156,7 @@ namespace DLTP_Phase1_AdressBook2
             Console.WriteLine("1: Show contacts");
             Console.WriteLine("2: Add contact");
             Console.WriteLine("3: Remove contact");
-            Console.WriteLine("4: Save to file");
+            Console.WriteLine("4: Modify contact");
             Console.WriteLine("End program by typing 'quit'");
             Console.Write("> ");          
         }
