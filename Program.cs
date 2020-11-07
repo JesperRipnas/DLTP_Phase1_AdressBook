@@ -189,6 +189,7 @@ namespace DLTP_Phase1_AdressBook2
                             Menu();
                             break;
                         default:
+                            Console.WriteLine("Incorrect input, please try again!");
                             break;
                     }
                 }
