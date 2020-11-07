@@ -46,25 +46,24 @@ namespace DLTP_Phase1_AdressBook2
                     break;
                 case "2":
                     Console.Clear();
-                    AddContact();
-                    SaveToFile(filePath);
+                    AddContact(filePath);
+                    Menu();
                     break;
                 case "3":
                     Console.Clear();
                     if (new FileInfo(filePath).Length == 0)
                     {
+                        Console.Clear();
                         Console.WriteLine("No contacts found!\n");
                         Menu();
                     }
                     else
                     {
                         PrintFile(filePath);
-                        RemoveContact();
-                        SaveToFile(filePath);
+                        RemoveContact(filePath);
                     }
                     break;
                 case "4":
-                    SaveToFile(filePath);
                     break;
             }
         }
@@ -83,9 +82,8 @@ namespace DLTP_Phase1_AdressBook2
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Saved to file! {filePath}\n");
             Console.ResetColor();
-            Menu();
         }
-        public static void AddContact()
+        public static void AddContact(string filePath)
         {
             Console.Write("(1/4) Enter first & lastname: ");
             string newName = Console.ReadLine();
@@ -95,13 +93,22 @@ namespace DLTP_Phase1_AdressBook2
             string newPhone = Console.ReadLine();
             Console.Write("(4/4) Enter email: ");
             string newEmail = Console.ReadLine();
-            Person newContact = new Person(newName, newAdress, newPhone, newEmail);
-            Book.Add(newContact);
-            //Print out
-            Console.WriteLine($"{newName}, {newAdress}, {newPhone}, {newEmail} was added!");
-            Menu();
+            // Doublecheck
+            Console.WriteLine("Are you sure you want to add the contact? (y/n)");
+            string input = Console.ReadLine().ToLower();
+            if (input == "y")
+            {
+                Person newContact = new Person(newName, newAdress, newPhone, newEmail);
+                Book.Add(newContact);
+                SaveToFile(filePath);
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("No changes were made\n");
+            }
         }
-        public static void RemoveContact()
+        public static void RemoveContact(string filePath)
         {
             Console.Write("Enter full name of contact you want to remove: ");
             string removeContact = Console.ReadLine();
@@ -110,22 +117,32 @@ namespace DLTP_Phase1_AdressBook2
             {
                 if (removeContact == Book[i].name)
                 {
-                    Book.RemoveAt(i);
-                    Console.WriteLine($"{removeContact} was removed!");
-                    Menu();
-                    break; ;
+                    // Doublecheck
+                    Console.WriteLine("Are you sure you want to remove the contact? (y/n)");
+                    string input = Console.ReadLine().ToLower();
+                    if (input == "y")
+                    {
+                        Book.RemoveAt(i);
+                        SaveToFile(filePath);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("No changes were made\n");
+                        break;
+                    }
                 }
                 else if(removeContact != Book[i].name)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("(!) Incorrect name!\n");
                     Console.ResetColor();
-                    RemoveContact();
+                    RemoveContact(filePath);
                     break;
                 }
             }
+            Menu();
         }
-
         public static void PrintFile(string filePath)
         {
             string[] fileText = File.ReadAllLines(filePath);
