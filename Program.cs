@@ -56,6 +56,20 @@ namespace DLTP_Phase1_AdressBook2
                         }
                         break;
                     case "4":
+                        Console.Clear();
+                        if (new FileInfo(filePath).Length == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("No contacts found!\n");
+                            Menu();
+                        }
+                        else
+                        {
+                            PrintFile(filePath);
+                            ModifyContact(filePath);
+                        }
+                        break;
+                    case "quit":
                         break;
                     default:
                         Console.WriteLine("Incorrect input, please try again!");
@@ -92,7 +106,7 @@ namespace DLTP_Phase1_AdressBook2
             Console.Write("(4/4) Enter email: ");
             string newEmail = Console.ReadLine();
             // Doublecheck
-            Console.WriteLine("Are you sure you want to add the contact? (y/n)");
+            Console.Write("Are you sure you want to add the contact? (y/n): ");
             string input = Console.ReadLine().ToLower();
             if (input == "y")
             {
@@ -116,7 +130,7 @@ namespace DLTP_Phase1_AdressBook2
                 if (removeContact == Book[i].name)
                 {
                     // Doublecheck
-                    Console.WriteLine("Are you sure you want to remove the contact? (y/n)");
+                    Console.Write("Are you sure you want to remove the contact? (y/n): ");
                     string input = Console.ReadLine().ToLower();
                     if (input == "y")
                     {
@@ -130,25 +144,68 @@ namespace DLTP_Phase1_AdressBook2
                         break;
                     }
                 }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Could not find contact {removeContact}\n");
-                    Console.ResetColor();
-                }
             }
             Menu();
+        }
+        public static void ModifyContact(string filePath)
+        {
+            Console.Write("Enter full name of contact you want to change: ");
+            string modifyContact = Console.ReadLine();
+            for (int i = 0; i < Book.Count; i++)
+            {
+                if (modifyContact == Book[i].name)
+                {
+                    Console.Write("Change name, adress, phone or email?: ");
+                    string changeInput = Console.ReadLine().ToLower();
+
+                    switch (changeInput)
+                    {
+                        case "name":
+                            Console.Write($"Change {Book[i].name} to: ");
+                            string newName = Console.ReadLine();
+                            Book[i].name = newName;
+                            SaveToFile(filePath);
+                            Menu();
+                            break;
+                        case "adress":
+                            Console.Write($"Change {Book[i].adress} to: ");
+                            string newAdress = Console.ReadLine();
+                            Book[i].adress = newAdress;
+                            SaveToFile(filePath);
+                            Menu();
+                            break;
+                        case "phone":
+                            Console.Write($"Change {Book[i].phonenumber} to: ");
+                            string newPhone = Console.ReadLine();
+                            Book[i].phonenumber = newPhone;
+                            SaveToFile(filePath);
+                            Menu();
+                            break;
+                        case "email":
+                            Console.Write($"Change {Book[i].email} to: ");
+                            string newEmail = Console.ReadLine();
+                            Book[i].email = newEmail;
+                            SaveToFile(filePath);
+                            Menu();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
         public static void PrintFile(string filePath)
         {
             string[] fileText = File.ReadAllLines(filePath);
-            Console.WriteLine("Contacts");
+            Console.WriteLine(" Contacts in adressbook");
+            Console.WriteLine("************************");
             foreach (string row in fileText)
             {
                 string[] split = row.Split(';');
-                Console.Write($"Name: {split[0]}\nAdress: {split[1]}\nPhone: {split[2]}\nEmai: {split[3]}\n");
-                Console.WriteLine();
+                Console.Write($"Name: {split[0]}\nAdress: {split[1]}\nPhone: {split[2]}\nEmail: {split[3]}\n");
+                Console.WriteLine("************************");
             }
+            Console.WriteLine();
         }
         public static string ReadFile()
         {
@@ -178,12 +235,12 @@ namespace DLTP_Phase1_AdressBook2
         }
         public static void Menu()
         {
-            Console.WriteLine("**** Pick an option ****");
+            Console.WriteLine("End program by typing 'quit'");
+            Console.WriteLine("****** Pick an option ******\n");
             Console.WriteLine("1: Show contacts");
             Console.WriteLine("2: Add contact");
             Console.WriteLine("3: Remove contact");
-            Console.WriteLine("4: Modify contact");
-            Console.WriteLine("End program by typing 'quit'");
+            Console.WriteLine("4: Modify contact\n");
             Console.Write("> ");          
         }
         class Person
