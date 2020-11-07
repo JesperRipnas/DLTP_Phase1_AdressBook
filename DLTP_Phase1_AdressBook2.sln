@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLTP_Phase1_AdressBook2", "DLTP_Phase1_AdressBook2.csproj", "{EF9822A0-457B-46BE-9349-9608E21A9EC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF9822A0-457B-46BE-9349-9608E21A9EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF9822A0-457B-46BE-9349-9608E21A9EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF9822A0-457B-46BE-9349-9608E21A9EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF9822A0-457B-46BE-9349-9608E21A9EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44B1D9D3-5F46-41B8-A38B-6F83BC82F3DE}
+	EndGlobalSection
+EndGlobal
