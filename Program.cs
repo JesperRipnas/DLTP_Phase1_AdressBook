@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace DLTP_Phase1_AdressBook2
 {
@@ -8,7 +9,18 @@ namespace DLTP_Phase1_AdressBook2
         List<Person> Book = new List<Person>();
         static void Main(string[] args)
         {
-            
+            Menu();
+        }
+        private static void Menu()
+        {
+            Console.WriteLine("**** Pick an option ****");
+            Console.WriteLine("1: Show contacts");
+            Console.WriteLine("2: Add contact");
+            Console.WriteLine("3: Remove contact");
+            Console.WriteLine("4: Save to file");
+            Console.WriteLine("End program by typing 'quit'");
+            Console.Write("> ");
+            Console.ReadLine();
         }
         class Person
         {
