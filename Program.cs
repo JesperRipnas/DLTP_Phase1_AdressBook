@@ -25,6 +25,7 @@ namespace DLTP_Phase1_AdressBook2
                 {
                     case "1":
                         Console.Clear();
+                        //Check if file contains data or not. Source https://stackoverflow.com/questions/3007711/is-file-empty-check
                         if (new FileInfo(filePath).Length == 0)
                         {
                             Console.WriteLine("No contacts found!\n");
