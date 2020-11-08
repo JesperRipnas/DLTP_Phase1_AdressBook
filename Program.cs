@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection.Metadata.Ecma335;
+using System.Diagnostics.Tracing;
 
 namespace DLTP_Phase1_AdressBook2
 {
@@ -211,34 +212,30 @@ namespace DLTP_Phase1_AdressBook2
         }
         public static void SearchContact()
         {
+            int counter = 0;
             Console.Write("Search for: ");
             string searchInput = Console.ReadLine();
-            Console.WriteLine("\nContacts found");
             for (int i = 0; i < Book.Count; i++)
             {
-                Console.WriteLine("************************");
-                if (Book[i].name.Contains(searchInput))
+                if (Book[i].name.Contains(searchInput) || Book[i].adress.Contains(searchInput) || Book[i].phonenumber.Contains(searchInput) || Book[i].email.Contains(searchInput))
                 {
-                    Console.WriteLine($"Name: {Book[i].name}\nAdress: {Book[i].adress}\nPhone: {Book[i].phonenumber}\nEmail: {Book[i].email}");
-                }
-                else
-                {
-                    Console.WriteLine($"{searchInput} could not be found");
+                    Console.WriteLine($"\nName: {Book[i].name}\nAdress: {Book[i].adress}\nPhone: {Book[i].phonenumber}\nEmail: {Book[i].email}");
+                    counter++;
                 }
             }
-            Console.WriteLine("************************\n");
+            Console.WriteLine($"\nFound ({counter}) results\n");
+            Console.WriteLine("****************************");
             Menu();
         }
         public static void PrintFile(string filePath)
         {
             string[] fileText = File.ReadAllLines(filePath);
-            Console.WriteLine(" Contacts in adressbook");
-            Console.WriteLine("************************");
+            Console.WriteLine("   Contacts in adressbook");
+            Console.WriteLine("****************************");
             foreach (string row in fileText)
             {
                 string[] split = row.Split(';');
-                Console.Write($"Name: {split[0]}\nAdress: {split[1]}\nPhone: {split[2]}\nEmail: {split[3]}\n");
-                Console.WriteLine("************************");
+                Console.Write($"\nName: {split[0]}\nAdress: {split[1]}\nPhone: {split[2]}\nEmail: {split[3]}\n");
             }
             Console.WriteLine();
         }
@@ -277,7 +274,7 @@ namespace DLTP_Phase1_AdressBook2
             Console.WriteLine("3: Add");
             Console.WriteLine("4: Remove");
             Console.WriteLine("5: Modify\n");
-            Console.Write("> ");          
+            Console.Write("> ");
         }
     }
     class Person
