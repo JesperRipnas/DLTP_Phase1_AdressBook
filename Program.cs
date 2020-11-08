@@ -39,10 +39,23 @@ namespace DLTP_Phase1_AdressBook2
                         break;
                     case "2":
                         Console.Clear();
+                        if (new FileInfo(filePath).Length == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("No contacts found!\n");
+                            Menu();
+                        }
+                        else
+                        {
+                            SearchContact();
+                        }
+                        break;
+                    case "3":
+                        Console.Clear();
                         AddContact(filePath);
                         Menu();
                         break;
-                    case "3":
+                    case "4":
                         Console.Clear();
                         if (new FileInfo(filePath).Length == 0)
                         {
@@ -56,7 +69,7 @@ namespace DLTP_Phase1_AdressBook2
                             RemoveContact(filePath);
                         }
                         break;
-                    case "4":
+                    case "5":
                         Console.Clear();
                         if (new FileInfo(filePath).Length == 0)
                         {
@@ -196,6 +209,26 @@ namespace DLTP_Phase1_AdressBook2
                 }
             }
         }
+        public static void SearchContact()
+        {
+            Console.Write("Search for: ");
+            string searchInput = Console.ReadLine();
+            Console.WriteLine("\nContacts found");
+            for (int i = 0; i < Book.Count; i++)
+            {
+                Console.WriteLine("************************");
+                if (Book[i].name.Contains(searchInput))
+                {
+                    Console.WriteLine($"Name: {Book[i].name}\nAdress: {Book[i].adress}\nPhone: {Book[i].phonenumber}\nEmail: {Book[i].email}");
+                }
+                else
+                {
+                    Console.WriteLine($"{searchInput} could not be found");
+                }
+            }
+            Console.WriteLine("************************\n");
+            Menu();
+        }
         public static void PrintFile(string filePath)
         {
             string[] fileText = File.ReadAllLines(filePath);
@@ -239,22 +272,23 @@ namespace DLTP_Phase1_AdressBook2
         {
             Console.WriteLine("End program by typing 'quit'");
             Console.WriteLine("****** Pick an option ******\n");
-            Console.WriteLine("1: Show contacts");
-            Console.WriteLine("2: Add contact");
-            Console.WriteLine("3: Remove contact");
-            Console.WriteLine("4: Modify contact\n");
+            Console.WriteLine("1: Show all");
+            Console.WriteLine("2: Search");
+            Console.WriteLine("3: Add");
+            Console.WriteLine("4: Remove");
+            Console.WriteLine("5: Modify\n");
             Console.Write("> ");          
         }
-        class Person
+    }
+    class Person
+    {
+        public string name, adress, phonenumber, email;
+        public Person(string N, string A, string P, string E)
         {
-            public string name, adress, phonenumber, email;
-            public Person(string N, string A, string P, string E)
-            {
-                name = N;
-                adress = A;
-                phonenumber = P;
-                email = E;
-            }
+            name = N;
+            adress = A;
+            phonenumber = P;
+            email = E;
         }
     }
 }
