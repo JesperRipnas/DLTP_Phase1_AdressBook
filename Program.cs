@@ -1,10 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Diagnostics.Tracing;
 
 namespace DLTP_Phase1_AdressBook2
 {
