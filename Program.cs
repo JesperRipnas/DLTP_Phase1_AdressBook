@@ -2,11 +2,23 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Diagnostics.Tracing;
 
 namespace DLTP_Phase1_AdressBook2
 {
+    class Person
+    {
+        public string name, adress, phonenumber, email;
+        public Person(string N, string A, string P, string E)
+        {
+            name = N;
+            adress = A;
+            phonenumber = P;
+            email = E;
+        }
+    }
     class Program
     {
         private static List<Person> Book = new List<Person>(); // keep list outside methods, so every method can call for it
@@ -107,8 +119,10 @@ namespace DLTP_Phase1_AdressBook2
             }
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Saved to file! {filePath}\n");
+            Console.WriteLine($"Saved to file!\n");
+            System.Threading.Thread.Sleep(1000);
             Console.ResetColor();
+            Console.Clear();
         }
         public static void AddContact(string filePath)
         {
@@ -243,9 +257,11 @@ namespace DLTP_Phase1_AdressBook2
         {
             try
             {
-                string filePath = @"C:\adressbook\contacts.txt";
+                // Read the contacts.txt in project folder instead of a hardwired path (if someone would clone project)
+                //source https://stackoverflow.com/questions/13762338/read-files-from-a-folder-present-in-project/31526925
+                //source https://stackoverflow.com/questions/14899422/how-to-navigate-a-few-folders-up
+                string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\..\data\contacts.txt");
                 string[] fileText = File.ReadAllLines(filePath);
-                //Read file and saves already written information into list
                 foreach (string row in fileText)
                 {
                     string[] split = row.Split(';');
@@ -275,17 +291,6 @@ namespace DLTP_Phase1_AdressBook2
             Console.WriteLine("4: Remove");
             Console.WriteLine("5: Modify\n");
             Console.Write("> ");
-        }
-    }
-    class Person
-    {
-        public string name, adress, phonenumber, email;
-        public Person(string N, string A, string P, string E)
-        {
-            name = N;
-            adress = A;
-            phonenumber = P;
-            email = E;
         }
     }
 }
